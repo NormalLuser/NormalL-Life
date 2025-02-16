@@ -41,11 +41,11 @@ This counts the pixel if the prior state was filled, while ignoring the current 
 
 To count a pixel’s current state I just do this:
 
- LDA (Screen6),y    ; Load pixel below target.
+ LDA (Screen6),y   ; Load pixel below target.
  
- AND #%00111111     ; Need to remove top bits
+ AND #%00111111    ; Need to remove top bits
  
- BEQ SkipINX        ; Skip if zero, INX if not
+ BEQ SkipINX       ; Skip if zero, INX if not
  
  INX
  
