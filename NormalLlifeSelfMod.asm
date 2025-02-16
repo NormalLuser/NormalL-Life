@@ -6,8 +6,8 @@
 ; Compiled with:
 ;  vasm6502_oldstyle -Fbin -dotdir -wdc02 -L Listing.txt NormalLlifeSelfMod.asm
 
-Target	 = $80 ;Screen used in 5 places. Is it too many to justify overhead? Just use a pointer for now?
-TargetH  = $81
+Target	 = $0 ;Screen used in 5 places. Is it too many to justify overhead? Just use a pointer for now?
+TargetH  = $1
 Neighbor1	 = CheckCell1+1 ;$82
 NeighborH1 = CheckCell1+2 ;$83
 Neighbor2	 = CheckCell2+1 ;$84
