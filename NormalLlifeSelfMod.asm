@@ -36,6 +36,7 @@ NeighborH8 = CheckCell8+2 ;$91
  
 ; FilledCellCheck routine is moved up here to optimize branching, saving 5,731 cycles each generation
 FilledCellCheck: ; Filled cell less likley after a few generations, so branch here
+
 ; Any live cell with 1 or zero neighbours dies
  CPX #2 
  BCC EmptyCellDraw 
@@ -45,39 +46,39 @@ FilledCellCheck: ; Filled cell less likley after a few generations, so branch he
  BCS EmptyCellDraw
  
  ; Any live cell with two or three live neighbours lives on 
-KeepFull: ;Mark cell as alive on last run and color alive now
- LDA #$BF ;10111111 
- STA (Target),y ;Blindly mark as previously filled and color filled
+KeepFull:              ; Mark cell as alive on last run and color alive now
+ LDA #$BF              ; #%10111111 
+ STA (Target),y        ; Blindly mark as previously filled and color filled
  JMP MainRowLoopReturn 
 
-EmptyCellDraw: ; We only come here from FilledCellCheck, so we know the cell is full
-  LDA #$80 ;#%10000000 ; This draw will always be the same
-  STA (Target),y ;Store black pixel with top bit set to previous state of white
+EmptyCellDraw:         ; We only come here from FilledCellCheck, so we know the cell is full
+  LDA #$80             ; #%10000000 ; This draw will always be the same
+  STA (Target),y       ; Store black pixel with top bit set to previous state of white
  JMP MainRowLoopReturn
 
-FullCellDraw: ; We only come here from EmptyCellCheck, so we know the cell was empty
-  LDA #$3F ; Mark as previously empty and color filled
-  STA (Target),y 
+FullCellDraw:          ; We only come here from EmptyCellCheck, so we know the cell was empty
+  LDA #$3F             ; #%00111111
+  STA (Target),y       ; Mark as previously empty and color filled
  jmp MainRowLoopReturn
  
 MainLoop:
-   LDY #98 ; Pointer to last 'non edge' pixel
+   LDY #98             ; Pointer to last 'non edge' pixel
   
-MainRowLoop: 
+MainRowLoop: ; Runs for each Target Pixel
 GameLogic: ;90-105 Cycles
 
  LDX #0 ;2
- ;Count filled pixels around the target pixel 66 cycles
+ ; Count filled pixels around the target pixel 66 cycles
 CheckCell1:
- LDA $2000,y ; Above ;(Neighbor1),y ; Above 
- BPL CheckCell2; Use prior value 
- INX              ;
+ LDA $2000,y    ; (Neighbor1),y ; Above 
+ BPL CheckCell2 ; Use prior value 
+ INX              
 CheckCell2:
- LDA $2000,y ;(Neighbor2),y ; Above 
+ LDA $2000,y    ; (Neighbor2),y ; Above 
  BPL CheckCell3 ; Use prior value
  INX
 CheckCell3: 
- LDA $2000,y ;(Neighbor3),y ; Above
+ LDA $2000,y    ; (Neighbor3),y ; Above
  BPL CheckCell4 ; Use prior value
  INX
 CheckCell4: 
@@ -86,27 +87,27 @@ CheckCell4:
  BEQ CheckCell5  ; Use current value
  INX
 CheckCell5:
- LDA $2000,y ;(Neighbor5),y ; Right
+ LDA $2000,y    ; (Neighbor5),y ; Right
  BPL CheckCell6 ; Use prior value
  INX
 CheckCell6:
- LDA $2000,y ;(Neighbor6),y ; Below
+ LDA $2000,y    ; (Neighbor6),y ; Below
  AND #%00111111 ; Remove top bits
  BEQ CheckCell7 ; Use current value
  INX
 CheckCell7:
- LDA $2000,y ;(Neighbor7),y ; Below
+ LDA $2000,y    ; (Neighbor7),y ; Below
  AND #%00111111 ; Remove top bits
  BEQ CheckCell8 ; Use current value
  INX
 CheckCell8:
- LDA $2000,y ;(Neighbor8),y ; Below
+ LDA $2000,y    ; (Neighbor8),y ; Below
  AND #%00111111 ; Remove top bits
  BEQ CheckCellL ; Use current value
  INX
 CheckCellL: 
 
-; We now have our count in x
+; We now have our count in X
 
  LDA (Target),y ; 24 cycles for empty pixel logic
  AND #%00111111 ; Use current pixel value
@@ -124,10 +125,11 @@ EmptyCellCheck: ; Optimizing for the most common case, an empty cell
  STA (Target),y ; A should already be 0 
   
 MainRowLoopReturn: ; Either fall through from EmptyCellCheck, or branch here from draw
- DEY ;next pixel to test
- BNE MainRowLoop
- ; Move down to next row
- ; Do bottom right pixel first to check for roll-over
+ DEY               ; Next pixel to test
+ BNE MainRowLoop   ; More pixels on this row?
+ 
+; Move down to next row
+; Do bottom right pixel first to check for roll-over
  CLC
  lda Neighbor8
  adc #$80
