@@ -81,9 +81,9 @@ CheckCell3:
  BPL CheckCell4 ; Use prior value
  INX
 CheckCell4: 
- LDA $2000,y ;(Neighbor4),y ; Left
- AND #%00111111  ;
- BEQ CheckCell5 ; Use current value
+ LDA $2000,y     ; (Neighbor4),y ; Left
+ AND #%00111111  ; Remove top bits
+ BEQ CheckCell5  ; Use current value
  INX
 CheckCell5:
  LDA $2000,y ;(Neighbor5),y ; Right
@@ -91,17 +91,17 @@ CheckCell5:
  INX
 CheckCell6:
  LDA $2000,y ;(Neighbor6),y ; Below
- AND #%00111111 ; Should not be 'Marked' yet, no need to remove top bits
+ AND #%00111111 ; Remove top bits
  BEQ CheckCell7 ; Use current value
  INX
 CheckCell7:
  LDA $2000,y ;(Neighbor7),y ; Below
- AND #%00111111 ; Should not be 'Marked' yet, no need to remove top bits
+ AND #%00111111 ; Remove top bits
  BEQ CheckCell8 ; Use current value
  INX
 CheckCell8:
  LDA $2000,y ;(Neighbor8),y ; Below
- AND #%00111111; Should not be 'Marked' yet, no need to remove top bits
+ AND #%00111111 ; Remove top bits
  BEQ CheckCellL ; Use current value
  INX
 CheckCellL: 
