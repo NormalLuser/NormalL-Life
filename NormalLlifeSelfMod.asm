@@ -1,5 +1,4 @@
 ; NormalLuser’s very NormalL version of Conway’s Game of Life for 6502 and the Worlds Worst Videocard.
-;
 ; Changed to self modify Absolute indexed reads for neighbor pixel count to improve speed:
 ;  560,066 cycles a generation,  2.49 FPS 87.5 cycles a pixel Self modify vrs  607,390 cycles a frame,  2.3 FPS  95 cycles a pixel normal code
 ;  Savings of 47,324 cycles but adding 43 bytes to the program. Now at 313 bytes.
@@ -7,27 +6,27 @@
 ; Compiled with:
 ;  vasm6502_oldstyle -Fbin -dotdir -wdc02 -L Listing.txt NormalLlifeSelfMod.asm
 
-Screen	 = $80 ;Screen used in 5 places. Is it too many to justify overhead? Just use a pointer for now?
-ScreenH  = $81 ;
-Screen1	 = EmptyScreen1+1 ;$82
-ScreenH1 = EmptyScreen1+2 ;$83
-Screen2	 = EmptyScreen2+1 ;$84
-ScreenH2 = EmptyScreen2+2 ;$85
-Screen3	 = EmptyScreen3+1 ;$86
-ScreenH3 = EmptyScreen3+2 ;$87
-Screen4	 = EmptyScreen4+1 ;$88
-ScreenH4 = EmptyScreen4+2 ;$89
-Screen5	 = EmptyScreen5+1 ;$8A
-ScreenH5 = EmptyScreen5+2 ;$8B
-Screen6	 = EmptyScreen6+1 ;$8C
-ScreenH6 = EmptyScreen6+2 ;$8D
-Screen7	 = EmptyScreen7+1 ;$8E
-ScreenH7 = EmptyScreen7+2 ;$8F
-Screen8	 = EmptyScreen8+1 ;$90
-ScreenH8 = EmptyScreen8+2 ;$91
+Target	 = $80 ;Screen used in 5 places. Is it too many to justify overhead? Just use a pointer for now?
+TargetH  = $81
+Neighbor1	 = CheckCell1+1 ;$82
+NeighborH1 = CheckCell1+2 ;$83
+Neighbor2	 = CheckCell2+1 ;$84
+NeighborH2 = CheckCell2+2 ;$85
+Neighbor3	 = CheckCell3+1 ;$86
+NeighborH3 = CheckCell3+2 ;$87
+Neighbor4	 = CheckCell4+1 ;$88
+NeighborH4 = CheckCell4+2 ;$89
+Neighbor5	 = CheckCell5+1 ;$8A
+NeighborH5 = CheckCell5+2 ;$8B
+Neighbor6	 = CheckCell6+1 ;$8C
+NeighborH6 = CheckCell6+2 ;$8D
+Neighbor7	 = CheckCell7+1 ;$8E
+NeighborH7 = CheckCell7+2 ;$8F
+Neighbor8	 = CheckCell8+1 ;$90
+NeighborH8 = CheckCell8+2 ;$91
 
 
- .ORG $200 ; Can not be in ROM.
+ .ORG $200 ;Can be in ROM
  
  CLD
  LDY #0
@@ -48,17 +47,17 @@ FilledCellCheck: ; Filled cell less likley after a few generations, so branch he
  ; Any live cell with two or three live neighbours lives on 
 KeepFull: ;Mark cell as alive on last run and color alive now
  LDA #$BF ;10111111 
- STA (Screen),y ;Blindly mark as previously filled and color filled
+ STA (Target),y ;Blindly mark as previously filled and color filled
  JMP MainRowLoopReturn 
 
 EmptyCellDraw: ; We only come here from FilledCellCheck, so we know the cell is full
   LDA #$80 ;#%10000000 ; This draw will always be the same
-  STA (Screen),y ;Store black pixel with top bit set to previous state of white
+  STA (Target),y ;Store black pixel with top bit set to previous state of white
  JMP MainRowLoopReturn
 
 FullCellDraw: ; We only come here from EmptyCellCheck, so we know the cell was empty
   LDA #$3F ; Mark as previously empty and color filled
-  STA (Screen),y 
+  STA (Target),y 
  jmp MainRowLoopReturn
  
 MainLoop:
@@ -68,48 +67,48 @@ MainRowLoop:
 GameLogic: ;97-107 Cycles
 
  LDX #0 ;2
- ;Count filled pixels around the target pixel 74 to 98 cycles
-EmptyScreen1:
- LDA $2000,y ; Above ;(Screen1),y ; Above 
- BPL EmptyScreen2; Use prior value 
+ ;Count filled pixels around the target pixel 66 cycles
+CheckCell1:
+ LDA $2000,y ; Above ;(Neighbor1),y ; Above 
+ BPL CheckCell2; Use prior value 
  INX              ;
-EmptyScreen2:
- LDA $2000,y ;(Screen2),y ; Above 
- BPL EmptyScreen3 ; Use prior value
+CheckCell2:
+ LDA $2000,y ;(Neighbor2),y ; Above 
+ BPL CheckCell3 ; Use prior value
  INX
-EmptyScreen3: 
- LDA $2000,y ;(Screen3),y ; Above
- BPL EmptyScreen4 ; Use prior value
+CheckCell3: 
+ LDA $2000,y ;(Neighbor3),y ; Above
+ BPL CheckCell4 ; Use prior value
  INX
-EmptyScreen4: 
- LDA $2000,y ;(Screen4),y ; Left
+CheckCell4: 
+ LDA $2000,y ;(Neighbor4),y ; Left
  AND #%00111111  ;
- BEQ EmptyScreen5 ; Use current value
+ BEQ CheckCell5 ; Use current value
  INX
-EmptyScreen5:
- LDA $2000,y ;(Screen5),y ; Right
- BPL EmptyScreen6 ; Use prior value
+CheckCell5:
+ LDA $2000,y ;(Neighbor5),y ; Right
+ BPL CheckCell6 ; Use prior value
  INX
-EmptyScreen6:
- LDA $2000,y ;(Screen6),y ; Below
+CheckCell6:
+ LDA $2000,y ;(Neighbor6),y ; Below
  AND #%00111111 ; Should not be 'Marked' yet, no need to remove top bits
- BEQ EmptyScreen7 ; Use current value
+ BEQ CheckCell7 ; Use current value
  INX
-EmptyScreen7:
- LDA $2000,y ;(Screen7),y ; Below
+CheckCell7:
+ LDA $2000,y ;(Neighbor7),y ; Below
  AND #%00111111 ; Should not be 'Marked' yet, no need to remove top bits
- BEQ EmptyScreen8 ; Use current value
+ BEQ CheckCell8 ; Use current value
  INX
-EmptyScreen8:
- LDA $2000,y ;(Screen8),y ; Below
+CheckCell8:
+ LDA $2000,y ;(Neighbor8),y ; Below
  AND #%00111111; Should not be 'Marked' yet, no need to remove top bits
- BEQ EmptyScreenL ; Use current value
+ BEQ CheckCellL ; Use current value
  INX
-EmptyScreenL: 
+CheckCellL: 
 
 ; We now have our count in x
 
- LDA (Screen),y
+ LDA (Target),y ; 24 cycles for empty pixel logic
  AND #%00111111 ; Use current pixel value
 
 GameLogicTest: ;jump here to test A (Source Value) and X (neighbor count) logic
@@ -122,7 +121,7 @@ EmptyCellCheck: ; Optimizing for the most common case, an empty cell
  BEQ FullCellDraw ; Drawing a cell is less likley, so move on
 
  ;Keep cell empty, mark as previously empty is most likley 
- STA (Screen),y ; A should already be 0 
+ STA (Target),y ; A should already be 0 
   
 MainRowLoopReturn: ; Either fall through from EmptyCellCheck, or branch here from draw
  DEY ;next pixel to test
@@ -130,71 +129,71 @@ MainRowLoopReturn: ; Either fall through from EmptyCellCheck, or branch here fro
  ; Move down to next row
  ; Do bottom right pixel first to check for roll-over
  CLC
- lda Screen8
+ lda Neighbor8
  adc #$80
- sta Screen8
+ sta Neighbor8
  Bcc c8 ;            
- INC ScreenH8
- LDA ScreenH8
+ INC NeighborH8
+ LDA NeighborH8
  CMP #$40 ;3f ;Need logic for edges still, so stop before bottom line
  BEQ BottomOfScreen 
  CLC
 c8: 
  
- LDA Screen 
+ LDA Target 
  adc #$80
- sta Screen
+ sta Target
  Bcc c0 ;*+4 ; Simulator does not like the '*+4', using a lbl fixes issue and is more clear         
- INC ScreenH
+ INC TargetH
  CLC		
 c0:
- lda Screen1
+ lda Neighbor1
  adc #$80
- sta Screen1
+ sta Neighbor1
  Bcc c1 ;*+4             
- INC ScreenH1 
+ INC NeighborH1 
  CLC		
 c1: 		
- lda Screen2
+ lda Neighbor2
  adc #$80
- sta Screen2
+ sta Neighbor2
  Bcc c2 ;*+4             
- INC ScreenH2
+ INC NeighborH2
  CLC		
 c2:		
- lda Screen3
+ lda Neighbor3
  adc #$80
- sta Screen3
+ sta Neighbor3
  Bcc c3 ;*+4             
- INC ScreenH3
+ INC NeighborH3
  CLC		
 c3: 		
- lda Screen4
+ lda Neighbor4
  adc #$80
- sta Screen4
+ sta Neighbor4
  Bcc c4 ;*+4
- INC ScreenH4
+ INC NeighborH4
  CLC		
 c4: 		
- lda Screen5
+ lda Neighbor5
  adc #$80
- sta Screen5
+ sta Neighbor5
  Bcc c5 ;*+4
- INC ScreenH5
+ INC NeighborH5
  CLC		
 c5: 		
- lda Screen6
+ lda Neighbor6
  adc #$80
- sta Screen6
+ sta Neighbor6
  Bcc c6 ;*+4            
- INC ScreenH6
+ INC NeighborH6
  CLC		
 c6: 		
- lda Screen7
+ lda Neighbor7
  adc #$80
- sta Screen7
+ sta Neighbor7
  Bcc c7 ;*+4             
- INC ScreenH7
+ INC NeighborH7
  CLC		
 c7: 
 
@@ -203,33 +202,33 @@ c7:
 BottomOfScreen: 
  ; Reset pointers
  LDA #$20
- STA ScreenH
- STA ScreenH1 
- STA ScreenH2 
- STA ScreenH3 
- STA ScreenH4 
- STA ScreenH5 
+ STA TargetH
+ STA NeighborH1 
+ STA NeighborH2 
+ STA NeighborH3 
+ STA NeighborH4 
+ STA NeighborH5 
  INC ;LDA #$21
- STA ScreenH6
- STA ScreenH7 
- STA ScreenH8 
+ STA NeighborH6
+ STA NeighborH7 
+ STA NeighborH8 
  LDA #$80
- STA Screen4
+ STA Neighbor4
  INC ;LDA #$81
- STA Screen
+ STA Target
  INC ;LDA #$82
- STA Screen5
+ STA Neighbor5
  LDA #$00
- STA Screen1
- STA Screen6 
+ STA Neighbor1
+ STA Neighbor6 
  inc ;LDA #$01
- STA Screen2 
- STA Screen7
+ STA Neighbor2 
+ STA Neighbor7
  inc ;LDA #$02
- STA Screen3 
- STA Screen8
-                         
- JMP MainLoop ;BigTop  ;  607,390 cycles a frame,  2.3 FPS 95 cycles a pixel 
+ STA Neighbor3 
+ STA Neighbor8
+                       
+ JMP MainLoop ;BigTop  ;  560,066 cycles a frame,  2.49 FPS 87.5 cycles a pixel Self modify vrs  607,390 cycles a frame,  2.3 FPS  95 cycles a pixel normal
  
 
 
