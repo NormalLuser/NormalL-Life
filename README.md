@@ -5,6 +5,7 @@ This otherwise straightforward version of Conway’s Game of Life relies on a un
 
 Conway’s game of life has simple rules, but on limited systems there is one thing that gets in the way.
 You need to keep the current data while you update the next screen.
+
 The Ben Eater 6502 and VGA kits give you a 6502 system with 16 kb of ram, but the top 8 kb is the screen area. It is a very simple screen buffer. There is no hardware to change the screen area in ram or anything like that. If you put something in a byte in the screen area it shows up on the screen, and if you want to change it you have to draw all the pixels yourself in RAM. Even if we worked around Zeropage and clobbered the stack we would still need to spend many cycles copying data to the screen buffer.
 
 Some specifics here. That VGA hardware is 100 pixels by 64 pixels when attached to the 6502 like in the Ben Eater Video series.  It is 64 colors per pixel. This means that 2 bits are used for each Red, Green, and Blue pixel. This 6 bit color leaves 2 bits left over of the 8 bits for every pixel. These top two bits are not hooked up to any hardware at all. 
