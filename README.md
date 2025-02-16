@@ -28,7 +28,7 @@ On the 6502 when the top bit is set, even if you are not in decimal mode, it wil
 
 So I can simply do this:
 
-     LDA (Screen1),y  ; Load Pixel above target 
+     LDA (Neighbor1),y  ; Load Pixel above target 
 	 BPL SkipINX      ; Skip INX if top bit not set
 	 INX              ; Bit must be set, count it
 	SkipINX:          
@@ -42,7 +42,7 @@ This counts the pixel if the prior state was filled, while ignoring the current 
 To count a pixel’s current state I just do this:
 
  
-     LDA (Screen1),y  ; Load Pixel below target 
+     LDA (Neighbor7),y  ; Load Pixel below target 
 	 AND #%00111111   ; Remove top bits to see current value
 	 BEQ SkipINX      ; Skip if Zero
 	 INX              ; Must be filled, count it
