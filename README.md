@@ -1,5 +1,5 @@
 # NormalL-Life
-NormalLuser’s very normal version of Conway’s Game of Life for 6502 and the Worlds Worst Videocard
+NormalLuser’s not quite normal version of Conway’s Game of Life for 6502 and the Worlds Worst Videocard
 
 
 My test pattern has a Glider Factory, a Light-Weight Spaceship, a Pulsar, a Penta-decatholon among others and runs at at a glorious 2.5 FPS. 
