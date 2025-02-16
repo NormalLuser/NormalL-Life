@@ -59,9 +59,13 @@ Since our fist step is deciding if the target is ‘alive’ or not our logic fr
 Meaning:
 
 When we are marking a pixel ‘alive’ we already know that it was ‘dead’ and can always make the top bit 0 by storing $3F. 
+
 If we are marking a pixel ‘dead’ we already know that it was ‘alive’ and we can make the top bit 0 by storing $80.
+
 If we are keeping a pixel ‘alive’ we know that it was alive before and can always store $BF to mark the top bit 1.
+
 If we are keeping an empty cell empty we know that we can always store 0 to make the to bit 0. 
+
 
 This makes for a tidy little routine that is rather snappy for a naive algorithm.
 
