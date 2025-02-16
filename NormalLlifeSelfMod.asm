@@ -5,6 +5,7 @@
 ;
 ; Compiled with:
 ;  vasm6502_oldstyle -Fbin -dotdir -wdc02 -L Listing.txt NormalLlifeSelfMod.asm
+; NOTE: When making patterns/screens use $0 for Black and $BF for White
 
 Target	 = $0 ;Screen used in 5 places. Is it too many to justify overhead? Just use a pointer for now?
 TargetH  = $1
