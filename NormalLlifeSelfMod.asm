@@ -64,7 +64,7 @@ MainLoop:
    LDY #98 ; Pointer to last 'non edge' pixel
   
 MainRowLoop: 
-GameLogic: ;97-107 Cycles
+GameLogic: ;90-100 Cycles
 
  LDX #0 ;2
  ;Count filled pixels around the target pixel 66 cycles
