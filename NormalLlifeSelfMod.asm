@@ -27,7 +27,7 @@ Neighbor8  = CheckCell8+1 ;$90
 NeighborH8 = CheckCell8+2 ;$91
 
 
- .ORG $200 ;$20 Must be in RAM, can be put in Zero-Page to speed up a few hundred cycles a generation.
+ .ORG $400 ;$20 Must be in RAM, can be put in Zero-Page to speed up a few hundred cycles a generation.
  
  CLD
  LDY #0
