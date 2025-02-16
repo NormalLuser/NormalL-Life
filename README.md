@@ -55,6 +55,7 @@ SkipINX:
 I use the neighbor count from code like this to do the the game logic.
 The first thing I do is load the target cell and drop the top bits. 
 I then do BNE to branch on the cell being zero or non zero.
+
 Since our fist step is deciding if the target is ‘alive’ or not our logic from there allows us to assume the prior state of the pixel when updating the current state.
 Meaning:
 
