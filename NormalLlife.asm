@@ -5,7 +5,7 @@
 ; Compiled with:
 ;  vasm6502_oldstyle -Fbin -dotdir -wdc02 -L Listing.txt NormalLlife.asm
 
-Target	   = $80 ;Screen used in 5 places. Is it too many to justify overhead? Just use a pointer for now?
+Target	   = $80 
 TargetH    = $81
 Neighbor1  = $82
 NeighborH1 = $83
