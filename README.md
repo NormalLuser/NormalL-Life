@@ -27,18 +27,30 @@ Since the unused bit I use to mark the pixel is the top bit I can use the BPL ( 
 On the 6502 when the top bit is set, even if you are not in decimal mode, it will change the Negative flag and allow you to branch on it.
 
 So I can simply do this:
+
  LDA (Screen1),y ; Load pixel above target
+ 
  BPL SkipINX      ; Skip INX if top bit not set
+ 
  INX                     ; Top bit is set, increment
+ 
 SkipINX:         
+
 This counts the pixel if the prior state was filled, while ignoring the current state.
 
+
 To count a pixel’s current state I just do this:
+
  LDA (Screen6),y    ; Load pixel below target.
+ 
  AND #%00111111 ; Need to remove top bits
+ 
  BEQ SkipINX        ; Skip if zero, INX if not
+ 
  INX
+ 
 SkipINX:
+
 
 I use the neighbor count from code like this to do the the game logic.
 The first thing I do is load the target cell and drop the top bits. 
