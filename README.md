@@ -2,7 +2,7 @@
 NormalLuser’s very normal version of Conway’s Game of Life for 6502 and the Worlds Worst Videocard
 
 
-My test pattern has a Glider Factory, a Light-Weight Spaceship, a Pulsar, a Penta-decatholon among others all and runs at at a glorious 2.5 FPS. 
+My test pattern has a Glider Factory, a Light-Weight Spaceship, a Pulsar, a Penta-decatholon among others and runs at at a glorious 2.5 FPS. 
 Done with only 1.4 Mhz of 8 bit CPU.  
 
 This otherwise straightforward version of Conway’s Game of Life relies on a unique peculiarity of the hardware on the Worlds Worst Video Card to allow an elegant single pass algorithm on the 6502 CPU.
