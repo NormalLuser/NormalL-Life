@@ -28,11 +28,11 @@ On the 6502 when the top bit is set, even if you are not in decimal mode, it wil
 
 So I can simply do this:
 
- LDA (Screen1),y  ; Load pixel above target
+ LDA (Screen1),y	; Load pixel above target
  
- BPL SkipINX      ; Skip INX if top bit not set
+ BPL SkipINX	; Skip INX if top bit not set
  
- INX              ; Top bit is set, increment
+ INX	; Top bit is set, increment
  
 SkipINX:         
 
