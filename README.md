@@ -78,7 +78,7 @@ It turns out that the pointers for the neighbor cell count are only used in one 
 
 However the cycles saved by doing that means that for each pixel in the line we are saving cycles.
 
-Over 47,000 cycles are saved this way getting us to 2.5 generations a second at 87 cycles a pixel for the self modifying RAM based version at the cost of 43 more program bytes.
+Over 47,000 cycles are saved this way getting us to 2.5 generations a second at 87 cycles a pixel for the self modifying RAM based version at the cost of 43 more program bytes. You can get the lost bytes back by assembling the program to run out of Zero-Page and you also shave a few cycles off each row in the process.
 
 I have a few more things to speed it up planned and I also want to make it ‘wrap around’ so pixels going off one edge come in the opposite side. 
 
