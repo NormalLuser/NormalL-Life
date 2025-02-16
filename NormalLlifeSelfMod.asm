@@ -8,21 +8,21 @@
 
 Target	 = $0 ;Screen used in 5 places. Is it too many to justify overhead? Just use a pointer for now?
 TargetH  = $1
-Neighbor1	 = CheckCell1+1 ;$82
+Neighbor1  = CheckCell1+1 ;$82
 NeighborH1 = CheckCell1+2 ;$83
-Neighbor2	 = CheckCell2+1 ;$84
+Neighbor2  = CheckCell2+1 ;$84
 NeighborH2 = CheckCell2+2 ;$85
-Neighbor3	 = CheckCell3+1 ;$86
+Neighbor3  = CheckCell3+1 ;$86
 NeighborH3 = CheckCell3+2 ;$87
-Neighbor4	 = CheckCell4+1 ;$88
+Neighbor4  = CheckCell4+1 ;$88
 NeighborH4 = CheckCell4+2 ;$89
-Neighbor5	 = CheckCell5+1 ;$8A
+Neighbor5  = CheckCell5+1 ;$8A
 NeighborH5 = CheckCell5+2 ;$8B
-Neighbor6	 = CheckCell6+1 ;$8C
+Neighbor6  = CheckCell6+1 ;$8C
 NeighborH6 = CheckCell6+2 ;$8D
-Neighbor7	 = CheckCell7+1 ;$8E
+Neighbor7  = CheckCell7+1 ;$8E
 NeighborH7 = CheckCell7+2 ;$8F
-Neighbor8	 = CheckCell8+1 ;$90
+Neighbor8  = CheckCell8+1 ;$90
 NeighborH8 = CheckCell8+2 ;$91
 
 
