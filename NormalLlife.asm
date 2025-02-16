@@ -122,6 +122,7 @@ MainRowLoopReturn: ; Either fall through from EmptyCellCheck, or branch here fro
  BNE MainRowLoop
  ; Move down to next row
  ; Do bottom right pixel first to check for roll-over
+ CLC
  lda Screen8
  adc #$80
  sta Screen8
@@ -130,6 +131,7 @@ MainRowLoopReturn: ; Either fall through from EmptyCellCheck, or branch here fro
  LDA ScreenH8
  CMP #$40 ;3f ;Need logic for edges still, so stop before bottom line
  BEQ BottomOfScreen 
+ CLC
 c8: 
  
  LDA Screen 
@@ -219,12 +221,12 @@ BottomOfScreen:
  inc ;LDA #$02
  STA Screen3 
  STA Screen8
-;                         607,206 607,545 608,165 2.3 FPS 95 cycles a pixel 
- JMP MainLoop ;BigTop  ;  620,723 cycles a frame, 2.26 FPS, 96.9 cycles a pixel
+                         
+ JMP MainLoop ;BigTop  ;  607,390 cycles a frame, cycles 2.3 FPS 95 cycles a pixel 
  
 
 
-; Below is the test seed used for all cycle counts.
+;Below is the test seed used for all cycle counts.
 ;  .ORG $2000
  
 
