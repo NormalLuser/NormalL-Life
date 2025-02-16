@@ -74,9 +74,13 @@ The ROM based program is just 264 bytes and uses just 18 bytes of zero-page.
 This program runs at 95 cycles per cell and 2.3 generations a second. The speed does not change more than a few hundred cycles regardless of the number of changed pixels since every pixel is always checked.
 
 A simple optimization is to use self-modifying code for some pointers.
+
 It turns out that the pointers for the neighbor cell count are only used in one place. There is a little overhead to change the row update routine to update the memory location of the Absolute Indexed Y address in the code vrs updating a Zero-Page page location for the Indirect Indexed y. 
+
 However the cycles saved by doing that means that for each pixel in the line we are saving cycles.
-Over 47,000 cycles are saved this way getting us to 2.5 generations a second at 87 cycles a pixel for the self modifying RAM based version.
+
+Over 47,000 cycles are saved this way getting us to 2.5 generations a second at 87 cycles a pixel for the self modifying RAM based version at the cost of 43 more program bytes.
 
 I have a few more things to speed it up planned and I also want to make it ‘wrap around’ so pixels going off one edge come in the opposite side. 
+
 I wonder how fast I can get this?
