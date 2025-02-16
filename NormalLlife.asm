@@ -222,7 +222,7 @@ BottomOfScreen:
  STA Screen3 
  STA Screen8
                          
- JMP MainLoop ;BigTop  ;  607,390 cycles a frame, cycles 2.3 FPS 95 cycles a pixel 
+ JMP MainLoop ;BigTop  ;  607,390 cycles a frame,  2.3 FPS 95 cycles a pixel 
  
 
 
