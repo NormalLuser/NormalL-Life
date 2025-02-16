@@ -28,32 +28,31 @@ On the 6502 when the top bit is set, even if you are not in decimal mode, it wil
 
 So I can simply do this:
 
- LDA (Screen1),y	; Load pixel above target
- 
- BPL SkipINX	; Skip INX if top bit not set
- 
- INX	; Top bit is set, increment
- 
-SkipINX:         
+         LDA (Screen1),y  ; Load Pixel above target 
+	 BPL SkipINX      ; Skip INX if top bit not set
+	 INX              ; Bit must be set, count it
+	SkipINX:          
+       
+
+   
 
 This counts the pixel if the prior state was filled, while ignoring the current state.
 
 
 To count a pixel’s current state I just do this:
 
- LDA (Screen6),y   ; Load pixel below target.
  
- AND #%00111111    ; Need to remove top bits
+         LDA (Screen1),y  ; Load Pixel below target 
+	 AND #%00111111   ; Remove top bits to see current value
+	 BEQ SkipINX      ; Skip if Zero
+	 INX              ; Must be filled, count it
+	SkipINX:
+	
  
- BEQ SkipINX       ; Skip if zero, INX if not
- 
- INX
- 
-SkipINX:
 
 
 I use the neighbor count from code like this to do the the game logic.
-The first thing I do is load the target cell and drop the top bits. 
+The first thing I do after the count is load the target cell and drop the top bits to get the current value. 
 I then do BNE to branch on the cell being zero or non zero.
 
 Since our fist step is deciding if the target is ‘alive’ or not our logic from there allows us to assume the prior state of the pixel when updating the current state.
@@ -65,7 +64,7 @@ If we are marking a pixel ‘dead’ we already know that it was ‘alive’ and
 
 If we are keeping a pixel ‘alive’ we know that it was alive before and can always store $BF to mark the top bit 1.
 
-If we are keeping an empty cell empty we know that we can always store 0 to make the to bit 0. 
+If we are keeping an empty cell empty we know that we can always store 0 to mark the top bit as previously empty and the lower bits as currently empty.
 
 
 This makes for a tidy little routine that is rather snappy for a naive algorithm.
