@@ -1,6 +1,7 @@
 ; NormalLuser’s not quite NormalL version of Conway’s Game of Life for 6502 and the Worlds Worst Videocard.
 ; Changed to self modify Absolute indexed reads for neighbor pixel count to improve speed:
 ;  560,066 cycles a generation,  2.49 FPS 87.5 cycles a pixel Self modify vrs  607,390 cycles a frame,  2.3 FPS  95 cycles a pixel normal code
+; 272 bytes if put in Zeropage, 2.5 FPS
 ;  Savings of 47,324 cycles but adding 43 bytes to the program. Now at 313 bytes.
 ;
 ; Compiled with:
