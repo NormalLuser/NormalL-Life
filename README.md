@@ -17,6 +17,7 @@ The Ben Eater 6502 and VGA kits give you a 6502 system with 16 kb of ram, but th
 
 That VGA hardware is 100 pixels by 64 pixels when attached to the 6502 like in the Ben Eater Video series.  It is 64 colors per pixel. This means that 2 bits are used each for Red, Green, and Blue. This 6 bit color leaves 2 bits left over of the 8 bits for every pixel. These top two bits are not hooked up to any hardware at all. 
 In other words; There are 8 bits dedicated to each pixel in RAM but only 6 bits change the color. 
+
 This can be used to great advantage!
 
 My code has a simple single pass implementation made possible by this unique video hardware.
